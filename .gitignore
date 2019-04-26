@@ -1,0 +1,16 @@
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/script-etl/ml-latest.zip
+/script-etl/script-etl/ml-latest.zip
+/script-etl/script-etl/ml-latest-small.zip
+/script-etl/script-etl/.idea
+/script-etl/script-etl/venv
