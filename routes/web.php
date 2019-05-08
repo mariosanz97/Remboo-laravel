@@ -12,5 +12,12 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::get('/recomendadorU', 'HomeController@recomendador_user_user');
+Route::get('/calcular_correlacion', 'HomeController@calcular_correlacion');
+
+Route::get('/recomendadorI', 'HomeController@recomendador_item_item');
+Route::get('/recomendadorUser', 'HomeController@recomendador_user0');
+
