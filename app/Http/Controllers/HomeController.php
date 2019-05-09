@@ -12,7 +12,13 @@ class HomeController extends Controller
     {
       $results = DB::table('ratings')->distinct()->get(['user_id']);
       return view('recomendadorUU', ['results' => $results]);
-    } 
+    }
+
+    public function recomendador_user_user_result(Request $request)
+    {
+      $results = DB::table('ratings')->distinct()->get(['user_id']);
+      return view('recomendadorUU', ['results' => $results]);
+    }
 
      public function calcular_correlacion(Request $request)
     {     
@@ -35,6 +41,14 @@ class HomeController extends Controller
 
     $results = DB::table('ratings')->distinct()->get(['user_id']);
 */
+
+    /*
+    domingo 29
+
+    calcular prediccion con todos y quedarte con el vecindario que eligas o con el umbral que eligas
+     APlicar formula para calcular la prediccion
+
+    */
           
 
           dd($results);
@@ -61,8 +75,8 @@ class HomeController extends Controller
           $results = $a/$b;
 
 
-          dd($results);
-      return redirect('/recomendadorU', ['results' => $results]);
+          /*dd($results);*/
+      return redirect('/recomendadorUresult', ['results' => $resultss]);
     }
 
 

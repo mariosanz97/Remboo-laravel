@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/recomendadorU', 'HomeController@recomendador_user_user');
+Route::get('/recomendadorUresult', 'HomeController@recomendador_user_user_result');
 Route::get('/calcular_correlacion', 'HomeController@calcular_correlacion');
 
 Route::get('/recomendadorI', 'HomeController@recomendador_item_item');
