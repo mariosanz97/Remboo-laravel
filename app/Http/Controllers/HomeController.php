@@ -20,11 +20,14 @@ class HomeController extends Controller
       return view('recomendadorUU', ['results' => $results]);
     }
 
+
+
      public function calcular_correlacion(Request $request)
     {
           $user_id = request()->get('user_id');
           $umbral = request()->get('umbral');
           $item = request()->get('item');
+          $vecin = request()->get('vecin');
 
 /*
           $results = DB::select(DB::raw('select * from ratings e1, ratings e2 
@@ -40,17 +43,12 @@ class HomeController extends Controller
           and e1.movie_id = e2.movie_id 
           and e1.user_id != e2.user_id'));
 
-
           $id = $results[0]->userid2;
           $rating1 = array();
           $rating2 = array();
           $sim = array();
 
-          $array = [
-        ];
-
           $var = [$results[0]->userid1 => [1,2,3,4,5]];
-
 
           foreach ($results as $key => $data) {
             if ($id == $data->userid2) {
@@ -63,57 +61,68 @@ class HomeController extends Controller
               $x = $rating1;
               $y = $rating2;
 
-              if(count($x)!==count($y)){return -1;}
-              $x=array_values($x);
-              $y=array_values($y);
+              $res = $this->pearson($x, $y, $id, $sim);
 
-              if (count($x) != 0 || count($y) != 0) {
+          if (is_null($vecin)) {
 
-              $xs=array_sum($x)/count($x);
-              $ys=array_sum($y)/count($y);
-              $a=0;$bx=0;$by=0;
-              for($i=0;$i<count($x);$i++){
-                  $xr=$x[$i]-$xs;
-                  $yr=$y[$i]-$ys;
-                  $a+=$xr*$yr;
-                  $bx+=pow($xr,2);
-                  $by+=pow($yr,2);
-              } 
-              $b = sqrt($bx*$by);
-              if($b==0){
-                $resultss = 0;
-              }else{
-                $resultss = $a/$b;
-              }
-              }
+            if ($umbral <= $res) {
+              array_push($sim,$id .'->'. $res);
+            }
 
-              array_push($sim,$id .'->'. $resultss);
+          }elseif (is_null($umbral)) {
+
+            /*sort($sim);*/
+            array_push($sim, $id .'->'. $res);
+
+
+          } else {
+            echo "pelicano de marruecos";
+            
+          }
+
 
               unset($rating1);
               unset($rating2);
-
               $rating1 = array();
               $rating2 = array();
 
-            }
             $id = $data->userid2;
           }
+        }
+
+
+          
 
           print_r($sim);
-
-    /*
-    domingo 29
-
-    calcular prediccion con todos y quedarte con el vecindario que eligas o con el umbral que eligas
-     APlicar formula para calcular la prediccion
-
-
-            var_dump($data->ratings2);
-    */
-
-          /*dd($results);*/
       return view('recomendadorResult', ['results' => $results]);
     }
+
+    public function pearson($x, $y, $id, $sim){
+      $resultss = 0;
+      if(count($x)!==count($y)){return -1;}
+        $x=array_values($x);
+        $y=array_values($y);
+
+        if (count($x) != 0 || count($y) != 0) {
+          $xs=array_sum($x)/count($x);
+          $ys=array_sum($y)/count($y);
+          $a=0;$bx=0;$by=0;
+          for($i=0;$i<count($x);$i++){
+              $xr=$x[$i]-$xs;
+              $yr=$y[$i]-$ys;
+              $a+=$xr*$yr;
+              $bx+=pow($xr,2);
+              $by+=pow($yr,2);
+          } 
+          $b = sqrt($bx*$by);
+          if($b==0){
+            $resultss = 0;
+          }else{
+            $resultss = $a/$b;
+          }
+        }
+        return $resultss;
+      }
 
 
 }

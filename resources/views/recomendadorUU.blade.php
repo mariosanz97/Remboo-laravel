@@ -32,7 +32,7 @@
             </div>
               <div class="form-group col-xs-12 col-sm-8 col-md-6" onclick="enable_vecin()" >
               <label for="pwd">Vecindario</label>
-              <input type="text" class="form-control" id="vecin"  disabled="true" value="0" name="vecin">
+              <input type="text" class="form-control" id="vecin"  disabled="true" value="" name="vecin">
             </div>
             <button id="btn_recomendar" type="submit" class="btn btn-primary">Recomendar</button>
           </form>
