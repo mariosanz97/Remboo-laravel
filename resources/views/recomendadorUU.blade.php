@@ -4,14 +4,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+  <script src="{{ asset('js/labels.js') }}" defer></script>
+
 <main class="content">
   <div class="container" id="what" style="margin-top: 10px" align="center">
 
      <div class="panel-group">
         <div class="panel panel-default">
-          <div class="panel-body"><h3><strong>Recomendacioens Usuario a Usuario</strong></h3><br></div>
+          <div class="panel-body"><h3><strong>Recomendaciones Usuario a Usuario</strong></h3><br></div>
 
-          <form action="/calcular_correlacion" class="row" style="margin: 10px">
+          <form action="/calcular_correlacion" name="formm-user" class="row" style="margin: 10px">
             <div class="form-group col-xs-12 col-sm-8 col-md-6">
               <label for="email">Selecciona un usuario</label>
               <select id="id_user" class="form-control" id="sel1" name="user_id">
@@ -22,11 +24,15 @@
             </div>
             <div class="form-group col-xs-12 col-sm-8 col-md-6">
               <label for="pwd">Items del ranking</label>
-              <input type="text" class="form-control" id="pwd" value="5" name="item">
+              <input  type="text" class="form-control" id="item" value="5" name="item">
             </div>
-            <div class="form-group col-xs-12 col-sm-8 col-md-12">
+            <div class="form-group col-xs-12 col-sm-8 col-md-6" onclick="enable_umbral()" >
               <label for="pwd">Umbral similitud</label>
-              <input type="text" class="form-control" id="pwd" value="0.75" name="umbral">
+              <input type="text" class="form-control" id="umbral" value="0.75" name="umbral">
+            </div>
+              <div class="form-group col-xs-12 col-sm-8 col-md-6" onclick="enable_vecin()" >
+              <label for="pwd">Vecindario</label>
+              <input type="text" class="form-control" id="vecin"  disabled="true" value="0" name="vecin">
             </div>
             <button id="btn_recomendar" type="submit" class="btn btn-primary">Recomendar</button>
           </form>
