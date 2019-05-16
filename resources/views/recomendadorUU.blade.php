@@ -28,7 +28,7 @@
             </div>
             <div class="form-group col-xs-12 col-sm-8 col-md-6" onclick="enable_umbral()" >
               <label for="pwd">Umbral similitud</label>
-              <input type="text" class="form-control" id="umbral" value="0.75" name="umbral">
+              <input type="text" class="form-control" id="umbral" value="0.85" name="umbral">
             </div>
               <div class="form-group col-xs-12 col-sm-8 col-md-6" onclick="enable_vecin()" >
               <label for="pwd">Vecindario</label>

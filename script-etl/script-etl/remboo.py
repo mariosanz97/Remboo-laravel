@@ -58,7 +58,7 @@ def create_tags():
 
 
 def create_ratings():
-    cursor.execute("CREATE TABLE iF NOT EXISTS ratings(user_id INT, movie_id INT, ratings INT, time_stamp VARCHAR(999999))")
+    cursor.execute("CREATE TABLE iF NOT EXISTS ratings(user_id INT, movie_id INT, ratings decimal(11,2), time_stamp VARCHAR(999999))")
     with open('../ml-latest-small/ratings.csv', newline='',  encoding="utf8") as csvfile:
         next(csvfile)
         csdata = csv.reader(csvfile)

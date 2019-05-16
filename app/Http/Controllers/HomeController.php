@@ -16,8 +16,7 @@ class HomeController extends Controller
 
     public function recomendador_user_user_result(Request $request)
     {
-      $results = DB::table('ratings')->distinct()->get(['user_id']);
-      return view('recomendadorUU', ['results' => $results]);
+      return view('recomendadorResult');
     }
 
 
@@ -43,61 +42,65 @@ class HomeController extends Controller
           and e1.movie_id = e2.movie_id 
           and e1.user_id != e2.user_id'));
 
+
+
           $id = $results[0]->userid2;
           $rating1 = array();
           $rating2 = array();
-          $sim = array();
 
-          $var = [$results[0]->userid1 => [1,2,3,4,5]];
+          $ids = array();
+          $predicciones = array();
 
           foreach ($results as $key => $data) {
             if ($id == $data->userid2) {
               array_push($rating1, $data->ratings1);
               array_push($rating2, $data->ratings2);
-
-              /*print_r($rating1);*/
-
             }else{
               $x = $rating1;
               $y = $rating2;
 
-              $res = $this->pearson($x, $y, $id, $sim);
+              $resultPearson = $this->pearson($x, $y);
 
-          if (is_null($vecin)) {
-
-            if ($umbral <= $res) {
-              array_push($sim,$id .'->'. $res);
-            }
-
-          }elseif (is_null($umbral)) {
-
-            /*sort($sim);*/
-            array_push($sim, $id .'->'. $res);
-
-
-          } else {
-            echo "pelicano de marruecos";
-            
-          }
-
+              if (is_null($vecin)) {
+                if ($umbral <= $resultPearson) {
+                  array_push($ids, $id );
+                  array_push($predicciones, $resultPearson);
+                  }
+                }
 
               unset($rating1);
               unset($rating2);
               $rating1 = array();
               $rating2 = array();
-
-            $id = $data->userid2;
+              $id = $data->userid2;
           }
-        }
+        } 
 
 
-          
+          $sim = array_combine($ids, $predicciones);
 
           print_r($sim);
+
+
+          if (is_null($vecin)) {
+              //prediccion 
+              foreach ($sim as $key => $value) {
+                //similitud * (punuacionPeli-mediaSusPuntuaciones)
+              }
+
+          }elseif (is_null($umbral)) {
+
+          }
+          else {
+          }
+
+
+
+
       return view('recomendadorResult', ['results' => $results]);
     }
 
-    public function pearson($x, $y, $id, $sim){
+    public function pearson($x, $y){
       $resultss = 0;
       if(count($x)!==count($y)){return -1;}
         $x=array_values($x);
