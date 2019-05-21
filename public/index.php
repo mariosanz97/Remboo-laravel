@@ -9,6 +9,8 @@
 
 define('LARAVEL_START', microtime(true));
 
+ini_set("Maximum execution", 3000);
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

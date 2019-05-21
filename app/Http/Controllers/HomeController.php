@@ -24,7 +24,7 @@ class HomeController extends Controller
 
      public function calcular_correlacion(Request $request)
     {
-          $user_id = request()->get('user_id');
+          $user_id = request()->get('user_id'); 
           $umbral = request()->get('umbral');
           $item = request()->get('item');
           $vecin = request()->get('vecin');
@@ -43,7 +43,8 @@ class HomeController extends Controller
           and e1.movie_id = e2.movie_id 
           and e1.user_id != e2.user_id'));
 
-          $pelisNoVistas =  DB::select(DB::raw('select idmovies as idm from movies where idmovies not in (SELECT movie_id FROM ratings WHERE user_id = '.$user_id.')'));
+          $pelisNoVistas =  DB::select(DB::raw('select idmovies as idm from movies where idmovies not in (SELECT movie_id FROM ratings WHERE user_id = '.$user_id.')
+              LIMIT 10'));
 
           $NoVistas = array();
           foreach ($pelisNoVistas as  $value) {
@@ -116,23 +117,82 @@ class HomeController extends Controller
 
           print_r($sim);
 
+          //pelis vistas por el user aux, y no por user original
+          $pelisVistasUserAux = array();
+          //rating de la
+          $pelisVistasUserAuxRating = array();
 
 
-          for ($i=0; $i < $NoVistas; $i++) { 
+          for ($i=0; $i < sizeof($NoVistas); $i++) {
+            //buscar a los users que hayan pasado el umbral y la hayan visto
+            //recoger todos ls users que hayan visto esa peli,
+            for ($j=0; $j < sizeof(array_keys($sim)); $j++) {
+                  $userAuxid = array_keys($sim)[$j];
+                  $QpelisVistasUserAux =  DB::select(DB::raw('SELECT ratings FROM ratings WHERE user_id = '.$userAuxid.' 
+                  and movie_id = '.$NoVistas[$i].''));
+                  if ($QpelisVistasUserAux!=null) {
+                    array_push($pelisVistasUserAux, $userAuxid);
 
-            for ($i=0; $i < sizeof(array_keys($sim)); $i++) { 
-              echo array_keys($sim)[$i];
-              $userAux = array_keys($sim)[$i];
-              $pelisVistasUserAux =  DB::select(DB::raw('SELECT movie_id FROM ratings WHERE user_id = '.$userAux.''));
+                    foreach ($QpelisVistasUserAux as $variable) {
+                        array_push($pelisVistasUserAuxRating, $variable->ratings);
+                      # code...
+                    }
 
-              $clave = array_search($NoVistas[$i], $pelisVistasUserAux);
-              echo $clave;
-              echo "::::::::::::::::::";
+                  }
 
-              echo "\n";
-            }
+
+              }
+
+                  $simm = array_combine($pelisVistasUserAux, $pelisVistasUserAuxRating);
+             //predccion
+              $den = array_sum ($simm );
+
+              $num= 0;
+
+              for ($k=0; $k < sizeof($simm); $k++) { 
+                 $med = $this->media(array_keys($simm)[$k]);
+                 //similitud * (punuacionPeli-mediaSusPuntuaciones)ç 
+                $num += $sim[array_keys($simm)[$k]] * ($simm[array_keys($simm)[$k]] - $med);
+
+
+
+              }
+
+                $medMyuser = $this->media($user_id);
+                if ($den!=0) {
+                  $resultao =  $medMyuser + ($num / $den);
+                  echo "resultao:  ";
+                  echo $resultao;
+                }
+
+                $num = 0;
+
+
+
+
+                  print_r($simm);
+
+                  unset($simm);
+                  $simm = array();
+                  unset($pelisVistasUserAux);
+                  $pelisVistasUserAux = array();
+                  unset($pelisVistasUserAuxRating);
+                  $pelisVistasUserAuxRating = array();
 
            }
+
+
+/*
+           for ($i=0; $i < sizeof($pelisVistasUserAux); $i++) { 
+                //similitud * (punuacionPeli-mediaSusPuntuaciones)
+                $num = $sim[$i] * ($rating1[$i] - $media1[$i]);
+                $resultao = $num / $dem;
+
+                echo "resultao:  ";
+                echo $resultao;
+                echo "\n";
+           }
+*/ 
 
  /*
           for ($i=0; $i < $NoVistas; $i++) {
@@ -169,6 +229,16 @@ class HomeController extends Controller
 
 
       return view('recomendadorResult', ['results' => $results]);
+    }
+
+
+
+    public function media($userid){
+        $Qmedia =  DB::select(DB::raw('SELECT AVG(ratings) as med FROM ratings where user_id = '.$userid.''));
+        foreach ($Qmedia as $med) {
+          $media = $med->med;
+        }
+        return $media;
     }
 
 /*
@@ -216,3 +286,32 @@ class HomeController extends Controller
 */
 
 }
+
+
+
+//funcion
+
+/*
+            for ($i=0; $i < sizeof(array_keys($sim)); $i++) { 
+              //echo array_keys($sim)[$i];
+              $userAuxid = array_keys($sim)[$i];
+                  echo "\n";
+                  echo "::::::::::::::::::::";
+                  echo $userAuxid;
+                  echo "::::::::::::::::::::";
+                  echo "\n";
+              $pelisVistasUserAux =  DB::select(DB::raw('SELECT movie_id FROM ratings WHERE user_id = '.$userAuxid.' 
+              LIMIT 10'));
+
+              foreach ($pelisVistasUserAux as  $value) {
+                  echo "\n";
+                  echo "-----";
+                  echo $value->movie_id;
+                  echo "-----";
+                  echo "\n";
+
+              }
+
+              echo "\n";
+            }
+            */
