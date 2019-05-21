@@ -158,8 +158,11 @@ class HomeController extends Controller
 
               }
 
+
                 $medMyuser = $this->media($user_id);
                 if ($den!=0) {
+                  echo "ESTA PELI ";
+                  echo $NoVistas[$i];
                   $resultao =  $medMyuser + ($num / $den);
                   echo "resultao:  ";
                   echo $resultao;
