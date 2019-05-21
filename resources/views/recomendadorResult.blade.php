@@ -14,21 +14,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>2</td>
-        <td>Tarzan</td>
-        <td>0.45</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Moe</td>
-        <td>0.45</td>
-      </tr>
-      <tr>
-        <td>21</td>
-        <td>Dooley</td>
-        <td>0.45</td>
-      </tr>
+     
+      @for ($i = 0; $i < sizeof($Fidpel); $i++)
+        <tr>
+          <td>{{$Fiduser[$i]}}</td>
+          <td>{{$Fidpel[$i]}}</td>
+          <td>{{$Fpredic[$i]}}</td>
+        </tr>
+       @endfor
     </tbody>
   </table>
 </div>

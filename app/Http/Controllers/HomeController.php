@@ -24,6 +24,11 @@ class HomeController extends Controller
 
      public function calcular_correlacion(Request $request)
     {
+
+          $Fpredic = array();
+          $Fiduser = array();
+          $Fidpel = array();
+
           $user_id = request()->get('user_id'); 
           $umbral = request()->get('umbral');
           $item = request()->get('item');
@@ -44,7 +49,7 @@ class HomeController extends Controller
           and e1.user_id != e2.user_id'));
 
           $pelisNoVistas =  DB::select(DB::raw('select idmovies as idm from movies where idmovies not in (SELECT movie_id FROM ratings WHERE user_id = '.$user_id.')
-              LIMIT 10'));
+              LIMIT 5'));
 
           $NoVistas = array();
           foreach ($pelisNoVistas as  $value) {
@@ -115,7 +120,7 @@ class HomeController extends Controller
 
           $sim = array_combine($ids, $predicciones);
 
-          print_r($sim);
+          //print_r($sim);
 
           //pelis vistas por el user aux, y no por user original
           $pelisVistasUserAux = array();
@@ -143,37 +148,49 @@ class HomeController extends Controller
 
               }
 
-                  $simm = array_combine($pelisVistasUserAux, $pelisVistasUserAuxRating);
+              $simm = array_combine($pelisVistasUserAux, $pelisVistasUserAuxRating);
              //predccion
-              $den = array_sum ($simm );
-
+              //$den = array_sum ($simm);
+              $den = 0;
               $num= 0;
+
+              for ($p=0; $p < sizeof($simm); $p++) { 
+                $den += $sim[array_keys($simm)[$p]];
+              }
+
 
               for ($k=0; $k < sizeof($simm); $k++) { 
                  $med = $this->media(array_keys($simm)[$k]);
                  //similitud * (punuacionPeli-mediaSusPuntuaciones)ç 
                 $num += $sim[array_keys($simm)[$k]] * ($simm[array_keys($simm)[$k]] - $med);
-
-
-
+                  array_push($Fiduser, array_keys($simm)[$k]);
               }
 
+/*
+                echo "DENOM y NUM";
+                echo "\n";
+                echo $den;
+                echo "\n";
+                echo $num;
+                echo "\n";
+*/
 
                 $medMyuser = $this->media($user_id);
                 if ($den!=0) {
-                  echo "ESTA PELI ";
-                  echo $NoVistas[$i];
+                  //echo "ESTA PELI  ";
+                  //echo $NoVistas[$i];
                   $resultao =  $medMyuser + ($num / $den);
-                  echo "resultao:  ";
-                  echo $resultao;
+                  //echo "  resultao:  ";
+                  //echo $resultao;
+                  array_push($Fpredic, $resultao);
+                  array_push($Fidpel, $NoVistas[$i]);
                 }
 
                 $num = 0;
+                $den = 0;
 
 
-
-
-                  print_r($simm);
+                  //print_r($simm);
 
                   unset($simm);
                   $simm = array();
@@ -231,7 +248,7 @@ class HomeController extends Controller
 
 
 
-      return view('recomendadorResult', ['results' => $results]);
+    return view('recomendadorResult', ['Fpredic' => $Fpredic, 'Fiduser' => $Fiduser, 'Fidpel' => $Fidpel ]);
     }
 
 
