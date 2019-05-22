@@ -8,7 +8,6 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Id Usuario</th>
         <th>Pelicula</th>
         <th>Prediccion</th>
       </tr>
@@ -17,7 +16,6 @@
      
       @for ($i = 0; $i < sizeof($Fidpel); $i++)
         <tr>
-          <td>{{$Fiduser[$i]}}</td>
           <td>{{$Fidpel[$i]}}</td>
           <td>{{$Fpredic[$i]}}</td>
         </tr>

@@ -26,7 +26,7 @@ class HomeController extends Controller
     {
 
           $Fpredic = array();
-          $Fiduser = array();
+          //$Fiduser = array();
           $Fidpel = array();
 
           $user_id = request()->get('user_id'); 
@@ -163,7 +163,7 @@ class HomeController extends Controller
                  $med = $this->media(array_keys($simm)[$k]);
                  //similitud * (punuacionPeli-mediaSusPuntuaciones)ç 
                 $num += $sim[array_keys($simm)[$k]] * ($simm[array_keys($simm)[$k]] - $med);
-                  array_push($Fiduser, array_keys($simm)[$k]);
+                  //array_push($Fiduser, array_keys($simm)[$k]);
               }
 
 /*
@@ -245,10 +245,16 @@ class HomeController extends Controller
           else {
           }
 */
+/*
+          print_r($Fpredic);
+          echo "\n"; 
+          print_r($Fiduser);
+          echo "\n"; 
+          print_r($Fidpel);
+          echo "\n";
+*/
 
-
-
-    return view('recomendadorResult', ['Fpredic' => $Fpredic, 'Fiduser' => $Fiduser, 'Fidpel' => $Fidpel ]);
+    return view('recomendadorResult', ['Fpredic' => $Fpredic, 'Fidpel' => $Fidpel ]);
     }
 
 
