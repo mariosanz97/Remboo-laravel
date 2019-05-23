@@ -26,6 +26,7 @@ class HomeController extends Controller
     {
 
           $Fpredic = array();
+          $FnombrePeli = array();
           //$Fiduser = array();
           $Fidpel = array();
 
@@ -122,9 +123,8 @@ class HomeController extends Controller
 
           //print_r($sim);
 
-          //pelis vistas por el user aux, y no por user original
+          //pelis vistas por el user aux, y no por user original // y su rating
           $pelisVistasUserAux = array();
-          //rating de la
           $pelisVistasUserAuxRating = array();
 
 
@@ -184,6 +184,9 @@ class HomeController extends Controller
                   //echo $resultao;
                   array_push($Fpredic, $resultao);
                   array_push($Fidpel, $NoVistas[$i]);
+                  $name = $this->nombrePeli($NoVistas[$i]);
+                  array_push($FnombrePeli, $name);
+                  
                 }
 
                 $num = 0;
@@ -253,8 +256,7 @@ class HomeController extends Controller
           print_r($Fidpel);
           echo "\n";
 */
-
-    return view('recomendadorResult', ['Fpredic' => $Fpredic, 'Fidpel' => $Fidpel ]);
+    return view('recomendadorResult', ['Fpredic' => $Fpredic, 'Fidpel' => $Fidpel, 'FnombrePeli' => $FnombrePeli, 'item' => $item]);
     }
 
 
@@ -265,6 +267,14 @@ class HomeController extends Controller
           $media = $med->med;
         }
         return $media;
+    }
+
+    public function nombrePeli($peliid){
+        $Qmedia =  DB::select(DB::raw('SELECT title as nom FROM movies WHERE idMovies = '.$peliid.''));
+        foreach ($Qmedia as $nom) {
+          $name = $nom->nom;
+        }
+        return $name;
     }
 
 /*

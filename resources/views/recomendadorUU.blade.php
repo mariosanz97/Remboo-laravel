@@ -24,7 +24,7 @@
             </div>
             <div class="form-group col-xs-12 col-sm-8 col-md-6">
               <label for="pwd">Items del ranking</label>
-              <input  type="text" class="form-control" id="item" value="5" name="item">
+              <input  type="text" class="form-control" id="item" value="10" name="item">
             </div>
             <div class="form-group col-xs-12 col-sm-8 col-md-6" onclick="enable_umbral()" >
               <label for="pwd">Umbral similitud</label>

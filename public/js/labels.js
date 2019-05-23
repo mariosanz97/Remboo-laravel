@@ -11,5 +11,5 @@ function enable_vecin()
 document.getElementById("vecin").disabled = false;
 document.getElementById("umbral").disabled = true;
 document.getElementById("umbral").value = null;
-document.getElementById("vecin").value = 5;
+document.getElementById("vecin").value = 10;
 }
