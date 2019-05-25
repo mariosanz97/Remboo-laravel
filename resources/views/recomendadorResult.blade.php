@@ -40,9 +40,10 @@ function sortTable() {
   }
 }
 </script>
-
+<script src="{{ asset('js/viewmovie.js') }}"></script>
 <div class="container">
   <h2>Prediccion</h2>
+  <p>Haga click en el nombre para ver más información de la película.</p>
   <table class="table" id="myTable">
     <thead>
       <tr>
@@ -56,12 +57,21 @@ function sortTable() {
          @if(!empty($Fidpel[$i]))
           <tr>
             <td>{{$Fidpel[$i]}}</td>
-            <td>{{$FnombrePeli[$i]}}</td>
+            <td id="{{$Fidpel[$i]}}" class="select-movie">{{$FnombrePeli[$i]}}</td>
             <td>{{$Fpredic[$i]}}</td>
           </tr>
           @endif
        @endfor
+
     </tbody>
   </table>
+
+  <div class="toast-body">
+            
+  </div>
+
+  <div class="toast-photo">
+
+  </div>
 </div>
 </body>
