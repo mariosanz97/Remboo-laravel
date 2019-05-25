@@ -66,12 +66,11 @@ function sortTable() {
     </tbody>
   </table>
 
-  <div class="toast-body">
-            
+  <div class="toast-body" style="margin: 5%;">
   </div>
 
   <div class="toast-photo">
-
   </div>
+
 </div>
 </body>

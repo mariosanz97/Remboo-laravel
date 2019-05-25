@@ -13,8 +13,8 @@ function onSelectEventChange(movie_id){
         console.log(data);
         var html_descripcion = "";
         var html_photo = "";
-            html_descripcion += '<div class="toast-body">'+data[1]+'</div>';
-            html_photo += '<div class="toast-photo"><img src="'+data[0]+'"></div>';
+            html_descripcion += '<div class="toast-body"><strong>'+data[1]+'</strong></div>';
+            html_photo += '<div align="center" class="toast-photo"><img src="'+data[0]+'"></div>';
         $('.toast-body').html(html_descripcion);
         $('.toast-photo').html(html_photo);
     });
