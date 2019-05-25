@@ -13,7 +13,7 @@
         <div class="panel panel-default">
           <div class="panel-body"><h3><strong>Recomendaciones Usuario a Usuario</strong></h3><br></div>
 
-          <form action="/calcular_correlacion" name="formm-user" class="row" style="margin: 10px">
+          <form action="/calcular_correlacion_user" name="formm-user" class="row" style="margin: 10px">
             <div class="form-group col-xs-12 col-sm-8 col-md-6">
               <label for="email">Selecciona un usuario</label>
               <select id="id_user" class="form-control" id="sel1" name="user_id">

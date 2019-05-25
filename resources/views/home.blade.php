@@ -15,8 +15,8 @@
   <a href="/recomendadorU">
    <button id="btn_recomendar" type="submit" class="btn btn-primary">Recomendar User-User</button>
   </a>
-  <a href="/">
-   <button id="btn_recomendar" type="submit" class="btn btn-primary">Recomendar Item Item</button>
+  <a href="/valorarPelicula">
+   <button id="btn_recomendar" type="submit" class="btn btn-primary">Valorar Pelicula</button>
   </a><br><br><br>
   <h4>Por Maurizio Martin y Mario Sanz</h4><br>
 </div>

@@ -12,17 +12,63 @@ class HomeController extends Controller
     public function recomendador_user_user()
     {
       $results = DB::table('ratings')->distinct()->get(['user_id']);
-      return view('recomendadorUU', ['results' => $results]);
+      return view('recomendadorUview', ['results' => $results]);
     }
-
     public function recomendador_user_user_result(Request $request)
     {
       return view('recomendadorResult');
     }
 
+    public function valorarPeliculaController(){
+      $pelisNoVistas =  DB::select(DB::raw('select idmovies as idm from movies where idmovies not in (SELECT movie_id FROM ratings WHERE user_id = 0) LIMIT 50'));
+      $NoVistas = array();
+      foreach ($pelisNoVistas as  $value) {
+          $name = $this->nombrePeli($value->idm);
+          array_push($NoVistas, $name);
+      }
+      return view('valorarPeliculaView', ['NoVistas' => $NoVistas]);
+    }
+
+    public function valorar(Request $request)
+    {
+      $valorar = request()->get('valorar');
+      $nombrePeli = request()->get('nombrePeli');
+
+      $idPeli =  DB::select(DB::raw('SELECT idMovies as id FROM movies WHERE title = "'.$nombrePeli.'"'));
+      foreach ($idPeli as $nom) {
+        $idM = $nom->id;
+      }
 
 
-     public function calcular_correlacion(Request $request)
+        $consulta =  DB::select(DB::raw('SELECT user_id as uid FROM ratings WHERE user_id = "'.$nombrePeli.'" and movie_id = '.$idM.''));
+        
+
+        if (is_null($consulta)) {
+          dd("hola");
+        }
+/*
+        if ($consulta)
+          {
+            DB::table('ratings')
+            ->where('movie_id', $idM)
+            ->update(['ratings' => $valorar]);
+          } else {
+            DB::table('ratings')->insert(
+                ['user_id' => 0,
+                'movie_id' => $idM,
+                'ratings' => $valorar,
+                'time_stamp' => $data['created_at']
+              ]
+            );
+          }
+
+      $data['created_at'] =new \DateTime();
+*/
+
+      return view('home');
+    }
+
+     public function calcular_correlacion_user_user(Request $request)
     {
 
           $Fpredic = array();

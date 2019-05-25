@@ -15,15 +15,12 @@ Route::get('/', function () {
     return view('home');
 });
 
-
-
-//Route::get('/', 'HomeController@recomendador_user_user');
-
 Route::get('/recomendadorU', 'HomeController@recomendador_user_user');
 Route::get('/recomendadorUresult', 'HomeController@recomendador_user_user_result');
-Route::get('/calcular_correlacion', 'HomeController@calcular_correlacion');
+Route::get('/calcular_correlacion_user', 'HomeController@calcular_correlacion_user_user');
 
-Route::get('/recomendadorI', 'HomeController@recomendador_item_item');
 Route::get('/recomendadorUser', 'HomeController@recomendador_user0');
 
+Route::get('/valorarPelicula', 'HomeController@valorarPeliculaController');
+Route::get('/valorar', 'HomeController@valorar');
 
