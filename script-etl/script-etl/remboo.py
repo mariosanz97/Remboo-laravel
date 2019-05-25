@@ -4,7 +4,6 @@ import MySQLdb
 mydb = MySQLdb.connect(host='localhost', user='root', passwd='', db='db_remboo')
 cursor = mydb.cursor()
 
-
 def create_link():
     cursor.execute("CREATE TABLE iF NOT EXISTS links (movieId INT, imdbId INT, tmdbId INT, PRIMARY KEY (movieId))")
     with open('../ml-latest-small/links.csv', encoding="utf8") as csvf:
@@ -90,4 +89,4 @@ create_ratings()
 mydb.commit()
 mydb.close()
 
-print("Createdd")
+print("Created")
