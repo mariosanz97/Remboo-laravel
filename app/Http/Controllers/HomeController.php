@@ -20,7 +20,7 @@ class HomeController extends Controller
     }
 
     public function valorarPeliculaController(){
-      $pelisNoVistas =  DB::select(DB::raw('select idmovies as idm from movies where idmovies not in (SELECT movie_id FROM ratings WHERE user_id = 0) LIMIT 50'));
+      $pelisNoVistas =  DB::select(DB::raw('select idmovies as idm from movies where idmovies not in (SELECT movie_id FROM ratings WHERE user_id = 0) LIMIT 5'));
       $NoVistas = array();
       foreach ($pelisNoVistas as  $value) {
           $name = $this->nombrePeli($value->idm);
@@ -45,25 +45,17 @@ class HomeController extends Controller
 
         if (is_null($consulta)) {
           dd("hola");
-        }
-/*
-        if ($consulta)
-          {
-            DB::table('ratings')
-            ->where('movie_id', $idM)
-            ->update(['ratings' => $valorar]);
-          } else {
-            DB::table('ratings')->insert(
-                ['user_id' => 0,
-                'movie_id' => $idM,
-                'ratings' => $valorar,
-                'time_stamp' => $data['created_at']
-              ]
-            );
-          }
+        }      
 
-      $data['created_at'] =new \DateTime();
-*/
+        $data['created_at'] =new \DateTime();
+
+        DB::table('ratings')->insert(
+            ['user_id' => 0,
+            'movie_id' => $idM,
+            'ratings' => $valorar,
+            'time_stamp' => $data['created_at']
+          ]
+        );
 
       return view('home');
     }
@@ -183,15 +175,10 @@ class HomeController extends Controller
                   and movie_id = '.$NoVistas[$i].''));
                   if ($QpelisVistasUserAux!=null) {
                     array_push($pelisVistasUserAux, $userAuxid);
-
                     foreach ($QpelisVistasUserAux as $variable) {
                         array_push($pelisVistasUserAuxRating, $variable->ratings);
-                      # code...
                     }
-
                   }
-
-
               }
 
               $simm = array_combine($pelisVistasUserAux, $pelisVistasUserAuxRating);
@@ -204,13 +191,12 @@ class HomeController extends Controller
                 $den += $sim[array_keys($simm)[$p]];
               }
 
-
               for ($k=0; $k < sizeof($simm); $k++) { 
                  $med = $this->media(array_keys($simm)[$k]);
-                 //similitud * (punuacionPeli-mediaSusPuntuaciones)ç 
+                 //similitud * (punuacionPeli-mediaSusPuntuaciones)
                 $num += $sim[array_keys($simm)[$k]] * ($simm[array_keys($simm)[$k]] - $med);
-                  //array_push($Fiduser, array_keys($simm)[$k]);
               }
+
 
 /*
                 echo "DENOM y NUM";
